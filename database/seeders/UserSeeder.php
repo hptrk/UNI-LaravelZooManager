@@ -30,7 +30,7 @@ class UserSeeder extends Seeder
 
         // normal users
         User::factory()
-            ->count(5)
+            ->count(10)
             ->create();
     }
 }

@@ -17,9 +17,16 @@ class Enclosure extends Model
         'feeding_at' // time of day for feeding
     ];
 
-    protected $casts = [
-        'feeding_at' => 'datetime'
-    ];
+    // protected $casts = [
+    //     'feeding_at' => 'datetime'
+    // ];
+
+    // accessor - only returns time in H:i format
+    public function getFeedingAtAttribute($value)
+    {
+        if (!$value) return null;
+        return substr($value, 0, 5);
+    }
 
     // N:M relationship with users
     public function users(): BelongsToMany

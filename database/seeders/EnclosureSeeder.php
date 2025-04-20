@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Enclosure;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class EnclosureSeeder extends Seeder
@@ -15,7 +14,7 @@ class EnclosureSeeder extends Seeder
     public function run(): void
     {
         Enclosure::factory()
-            ->count(10)
+            ->count(50)
             ->create()
             ->each(function (Enclosure $enclosure) {
                 // for every enclosure, attach some users (keepers)

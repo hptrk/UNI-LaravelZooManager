@@ -16,17 +16,13 @@ class HomeController extends Controller
         $animalCount = Animal::count();
         $user = Auth::user();
         $now = Carbon::now();
+        $currentTime = $now->format('H:i');
+
         $enclosures = $user->enclosures()
-            ->select('enclosures.*')
-            ->where(function ($query) use ($now){
-                // filter out enclosures that have already been fed today
-                $query->whereRaw("CAST(CONCAT(DATE(?), ' ', TIME(feeding_at)) AS DATETIME) > ?", [
-                    $now->format('Y-m-d'), 
-                    $now
-                ]);
-            })
+            ->whereRaw("TIME(feeding_at) > ?", [$currentTime])
             ->orderBy('feeding_at')
             ->get();
+
         return view('home', compact('enclosureCount', 'animalCount', 'enclosures'));
     }
 }
