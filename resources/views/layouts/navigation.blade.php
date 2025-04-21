@@ -18,11 +18,29 @@
                     <x-nav-link :href="route('enclosures.index')" :active="request()->routeIs('enclosures.*')">
                         {{ __('Enclosures') }}
                     </x-nav-link>
+                    @if(Auth::user()->admin)
+                        <x-nav-link :href="route('animals.archived')" :active="request()->routeIs('animals.archived')">
+                            {{ __('Archived Animals') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
+                <!-- Add New Animal Button (only for admins) - Moved here -->
+                @if(Auth::user()->admin)
+                    <div class="mr-4">
+                        <a href="{{ route('animals.create') }}" 
+                        class="inline-flex items-center px-4 py-2 bg-green-600 dark:bg-green-700 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-500 dark:hover:bg-green-600 active:bg-green-700 dark:active:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                            </svg>
+                            {{ __('Add Animal') }}
+                        </a>
+                    </div>
+                @endif
+                
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
@@ -73,10 +91,23 @@
             <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">
                 {{ __('Home') }}
             </x-responsive-nav-link>
-
+            
             <x-responsive-nav-link :href="route('enclosures.index')" :active="request()->routeIs('enclosures.*')">
                 {{ __('Enclosures') }}
             </x-responsive-nav-link>
+
+            @if(Auth::user()->admin)
+                <x-responsive-nav-link :href="route('animals.archived')" :active="request()->routeIs('animals.archived')">
+                    {{ __('Archived Animals') }}
+                </x-responsive-nav-link>
+            @endif
+
+            <!-- Add New Animal Link for mobile (only for admins) -->
+            @if(Auth::user()->admin)
+                <x-responsive-nav-link :href="route('animals.create')" :active="request()->routeIs('animals.create')" class="text-green-600 dark:text-green-400">
+                    {{ __('Add New Animal') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->

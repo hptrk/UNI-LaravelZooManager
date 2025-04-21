@@ -51,9 +51,9 @@ class AnimalPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Animal $animal): bool
+    public function restore(User $user): bool
     {
-        return false;
+        return $user->admin;
     }
 
     /**
@@ -62,5 +62,21 @@ class AnimalPolicy
     public function forceDelete(User $user, Animal $animal): bool
     {
         return false;
+    }
+
+    /**
+     * Determine whether the user can archive all animals.
+     */
+    public function archiveAll(User $user): bool
+    {
+        return $user->admin;
+    }
+    
+    /**
+     * Determine whether the user can view archived animals.
+     */
+    public function viewArchived(User $user): bool
+    {
+        return $user->admin;
     }
 }

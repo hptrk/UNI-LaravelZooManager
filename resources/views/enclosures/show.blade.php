@@ -78,11 +78,28 @@
                       <div class="flex justify-between items-center mb-4">
                           <h2 class="text-xl font-semibold">Animals in Enclosure</h2>
                           
-                          @if(Auth::user()->admin && $animals->count() < $enclosure->limit)
-                              <a href="{{ route('animals.create', ['enclosure_id' => $enclosure->id]) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                  Add New Animal
-                              </a>
-                          @endif
+                          <div class="flex space-x-2">
+                              @if(Auth::user()->admin && $animals->count() > 0)
+                                  <form action="{{ route('animals.archive-all', $enclosure) }}" method="POST" class="inline-block">
+                                      @csrf
+                                      <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded flex items-center h-10" onclick="return confirm('Are you sure you want to archive all animals in this enclosure?')">
+                                          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                                          </svg>
+                                          Archive All
+                                      </button>
+                                  </form>
+                              @endif
+                              
+                              @if(Auth::user()->admin && $animals->count() < $enclosure->limit)
+                                  <a href="{{ route('animals.create', ['enclosure_id' => $enclosure->id]) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center h-10">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                    </svg>
+                                    <span>Add Animal</span>
+                                  </a>
+                              @endif
+                          </div>
                       </div>
 
                       @if($animals->count() > 0)

@@ -121,10 +121,23 @@ class EnclosureController extends Controller
     {
         $this->authorize('update', $enclosure);
 
+        // current animal count for validation
+        $currentAnimalCount = $enclosure->animals()->count();
+
         // validate the request
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'limit' => 'required|integer|min:1',
+            'limit' => [
+                'required',
+                'integer',
+                'min:1',
+                // custom validation to ensure limit is not less than current animal count
+                function ($_, $value, $fail) use ($currentAnimalCount) {
+                    if ($value < $currentAnimalCount) {
+                        $fail('The enclosure limit cannot be less than the current number of animals (' . $currentAnimalCount . ').');
+                    }
+                },
+            ],
             'feeding_at' => 'required|date_format:H:i',
             'user_ids' => 'array',
             'user_ids.*' => 'exists:users,id'
